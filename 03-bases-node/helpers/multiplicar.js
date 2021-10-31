@@ -1,4 +1,6 @@
 const fs = require('fs');
+const colors = require('colors');
+const { CLIENT_RENEG_LIMIT } = require('tls');
 
 // const crearArchivo = (base = 5) => {
 
@@ -24,24 +26,25 @@ const fs = require('fs');
     
 // }
 
-const crearArchivo = async (base = 5, listar = false) => {
+const crearArchivo = async (base = 5, listar = false, hasta = 10) => {
 
     try {
 
-        let salida = '';
+        let salida, consola = '';
     
-        for (let index = 1; index <= 10; index++) {
+        for (let index = 1; index <= hasta; index++) {
             salida += `${base} x ${index} = ${base* index}\n`;
+            consola += `${base} ${'x'.green} ${index} ${'='.green} ${base* index}\n`;
         }
         
         if(listar){
-            console.log("================");
-            console.log(`Tabla del: ${base}`);
-            console.log("================");
-            console.log(salida);
+            console.log("================".green);
+            console.log('Tabla del:'.green, colors.blue(base));
+            console.log("================".green);
+            console.log(consola);
         }
     
-        fs.writeFileSync(`tabla-${base}.txt`, salida);
+        fs.writeFileSync(`./salida/tabla-${base}.txt`, salida);
         
         return `tabla-${base}.txt`;
     } catch (error) {

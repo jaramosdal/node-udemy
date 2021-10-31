@@ -13,6 +13,12 @@ const argv = require('yargs')
             demandOption: true,
             default: false,
             describe: 'Muestra la tabla en consola'
+        }, 
+        'h': {
+            alias: 'hasta',
+            type: 'number',
+            default: 10,
+            describe: 'El el número hasta donde quieres la tabla'
         }
     })
     .check((argv, options) => {
