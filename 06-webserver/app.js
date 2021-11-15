@@ -1,25 +1,27 @@
-const http = require('http');
+const express = require('express')
+const app = express()
+const port = 8080;
 
-http.createServer((req, res) => {
-    // res.writeHead(200, { 'Content-Type': 'application/json' });
+app.set('view engine', 'hbs')
 
-    // const persona = {
-    //     id: 1,
-    //     nombre: 'Fernando'
-    // };
+// Servir contenido estático
+app.use(express.static('public'))
 
-    // res.write(JSON.stringify(persona));
-
-    res.setHeader('Content-Disposition', 'attachment; filename=lista.csv');
-    res.writeHead(200, { 'Content-Type': 'application/csv' });
-
-    res.write('id, nombreº\n');
-    res.write('1, Fernandoº\n');
-    res.write('2, Maríaº\n');
-    res.write('3, Juanº\n');
-    res.write('4, Pedroº\n');
-    res.end();
+app.get('/', (req, res) => {
+    res.render('home', { 
+        nombre: 'Javier Ramos Nodal',
+        titulo: 'Curso de Node'
+    });
 })
-.listen(8080);
 
-console.log('Escuchando en el puerto', 8080);
+app.get('/generic', (req, res) => {
+    res.sendFile(__dirname + '/public/generic.html')
+})
+
+app.get('/elements', (req, res) => {
+    res.sendFile(__dirname + '/public/elements.html')
+})
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
