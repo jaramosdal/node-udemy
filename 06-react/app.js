@@ -13,10 +13,6 @@ hbs.registerPartials(__dirname + '/views/partials')
 // Servir contenido estático
 app.use(express.static('public'))
 
-app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
-})
-
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
