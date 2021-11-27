@@ -18,11 +18,20 @@ const usuariosGet = (req = request, res = response) => {
 const usuariosPut = (req, res = response) => {
 
     const { id } = req.params;
-    const { nombre, edad } = req.body;
+    // Excluyo aquello que no quiero que se pueda actualizar
+    const { _id, password, google, correo, ...resto } = req.body;
+
+    if (password) {
+        // Encriptar la contraseña
+        const salt = bcryptjs.genSaltSync(); // 10 vueltas por defecto
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const usuario = Usuario.findByIdAndUpdate(id, resto);
 
     res.status(400).json({
         msg: 'put API - controlador',
-        id
+        usuario
     });
 }
 
@@ -30,14 +39,6 @@ const usuariosPost = async(req, res = response) => {
 
     const { nombre, correo, password, rol} = req.body;
     const usuario = new Usuario({ nombre, correo, password, rol});
-
-    // Verificar si el correo existe
-    const existeEmail = await Usuario.findOne({ correo });
-    if (existeEmail) {
-        return res.status(400).json({
-            msg: 'Ese correo ya está registrado'
-        })
-    }
 
     // Encriptar la contraseña
     const salt = bcryptjs.genSaltSync(); // 10 vueltas por defecto

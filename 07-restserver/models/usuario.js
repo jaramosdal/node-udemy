@@ -32,6 +32,11 @@ const UsuarioSchema = Schema({
     }
 });
 
-
+// En este caso, no puedo usar función de flecha, tiene que ser function()
+// En una función de flecha no se puede acceder al this
+UsuarioSchema.methods.toJSON = function() {
+    const { __v, password, ...usuario } = this.toObject();
+    return usuario;
+}
 
 module.exports = model('Usuario', UsuarioSchema);
