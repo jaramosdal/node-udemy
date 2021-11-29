@@ -6,7 +6,7 @@ const usuariosGet = async(req = request, res = response) => {
 
     const { limite = 5, desde = 0 } = req.query;
     const query = { estado: true };
-
+    
     const [ total, usuarios ] = await Promise.all([
         Usuario.countDocuments(query),
         Usuario.find(query)
